@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { GithubAuthProvider, GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { GithubAuthProvider, GoogleAuthProvider, TwitterAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import app from '../firebase/firebase.init';
 
+// Client ID: QlpoZS1BaXZtMkMwSWtrcUVlN0s6MTpjaQ
+// Client Secret: MQ__JOsyeHzkvNalhlC4vIL_24O65igB7usSpirIq9D7bXECii
 
 const Login = () => {
     const [isLoggedin, setIsLoggedin] = useState(null);
@@ -27,13 +29,23 @@ const Login = () => {
             .then(result => {
                 console.log(result.user);
                 const userInfo = result.user;
-                setIsLoggedin(userInfo)
+                setIsLoggedin(userInfo);
             })
             .catch(error => {
                 console.log(error);
             })
     }
-
+    const handleSignInWithTwitter = () =>{
+        const twitterProvider = new TwitterAuthProvider();
+        signInWithPopup(auth, twitterProvider)
+        .then(result => {
+            console.log(result.user);
+            setIsLoggedin(result.user);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
     return (
         <section className='container mx-auto my-5 text-xl font-semibold'>
             <h1>This is Login page</h1>
@@ -46,6 +58,7 @@ const Login = () => {
                     <div className='flex gap-5'>
                         <button className='btn-style my-3' onClick={handleSignInWithGoogle}>Google</button>
                         <button className='btn-style my-3' onClick={handleSignInWithGithub}>Github</button>
+                        <button className='btn-style my-3' onClick={handleSignInWithTwitter}>Twitter</button>
                     </div>
                 </div>
             }
